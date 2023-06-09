@@ -3,6 +3,7 @@ package fullst.fullst.dao;
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
 import fullst.fullst.models.Usuario;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,10 +32,20 @@ private EntityManager entityManager;    //nos sirve para hacer la conexion con l
 
         // vamos a trabajar con los objetos de nuestra clase en java dentro del lenguaje sql.
 
+/*
+
+gracias al autowired en usuario controladores, se establece el query de from usuario
+Esto lo podemos transportar tambien a cualquier parte del codigo.
+Es como si se compartiera en memoria (inyeccion de dependencias)
+
+        @Autowired
+        private UsuariosDao usuariosDao;
+
+ */
 
 
-
-        String query = "FROM usuarios";
+        //ponemos el nombre de la clase Usuario porque trabajamos con los objetos de java, no la tabla de nuestra base de datos
+        String query = "FROM Usuario";
        List<Usuario> resultado =entityManager.createQuery(query).getResultList();  //aca se guardaran los listados que hagamos en la consulta query.
         return resultado;
     }
@@ -112,7 +123,7 @@ entityManager.merge(usuario);
       //vamos a hacer la implementacion de contraseña usando argon (encriptacion de contraseña)
 
 
-        String query = "FROM usuarios WHERE email = : email";
+        String query = "FROM Usuario WHERE email = : email";
 
         List<Usuario> lista =entityManager.createQuery(query)
                 .setParameter("email", usuario.getEmail() )

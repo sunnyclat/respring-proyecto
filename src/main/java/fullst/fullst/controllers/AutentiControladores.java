@@ -29,6 +29,8 @@ public class AutentiControladores {
 
 
 Usuario logUs= usuariosDao.UsuarioVerificaciones(usuario);
+
+
        if(logUs !=null ){
 
 

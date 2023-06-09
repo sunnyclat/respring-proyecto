@@ -11,8 +11,7 @@
 $(document).ready(function() {
 
 
-//alert(123423);
-
+//#usuarios hace mencion a la tabla del html de usuarios, o sea la id con ese nombre el cual incluye el tbody
 cargarUsuarios();
   $('#usuarios').DataTable();
 });
@@ -31,19 +30,21 @@ async function cargarUsuarios(){
 
 
 
+//un string global
+let listaUsuariosHtml= '';
 
-let listaUsuariosHtml= '';  //un string global
+//la variable objeto de la clase usuario recorre el arraylist creado de la clase usuario
+  for(let usuario of usuarios){
 
-
-  for(let usuario of usuarios){ //la variable objeto de la clase usuario recorre el arraylist creado de la clase usuario
-
-let botonEliminar=  '<a href="#"    onclick= "eliminarUsuario('+ usuarios.id+')"  class="btn btn-danger btn-circle btn-sm"><i class="fas fa-trash"></i>  </a>';
+let botonEliminar=  '<a href="#"    onclick= "eliminarUsuario('+ usuario.id+')"  class="btn btn-danger btn-circle btn-sm"><i class="fas fa-trash"></i>  </a>';
 
 
 
 //creamos un string en donde pondremos todo el html
 
-let usuarioHtml= '<tr>  <td>'+ usuarios.id+  '</td><td>'  +usuarios.nombre+ ' </td><td>' +usuarios.apellido+    '</td><td>'  +usuarios.email+  '</td><td>'   + usuarios.password +' </td><td>' +botonEliminar+ '</td></tr>';
+let usuarioHtml= '<tr>  <td>'+ usuario.id+  '</td><td>'  + usuario.nombre + ' </td><td>'
++ usuario.apellido+    '</td><td>'  + usuario.email +  '</td><td>'
++ usuario.password +' </td><td>' +  botonEliminar + '</td></tr>';
 
 listaUsuariosHtml += usuarioHtml;  //pasamos el string dentro del for each al global.
 
@@ -95,7 +96,7 @@ return;
 }
 
 
-
+//tener en cuenta el poner usuarios/ y luego el id, ya que sacando la / no lo borra
   const request = await fetch('api/usuarios/' + id, {
     method: 'DELETE',
 

@@ -78,7 +78,7 @@ private JWTutil jwTutil;
 
     @RequestMapping(value = "api/usuarios", method = RequestMethod.GET)
     //guardamos el token que tenemos en la cabecera dentro de la variable token del parametro gracias a la anotacion de requestheader
-    public List<Usuario> getUsuarios(@RequestHeader(value= "Authorization") String token) {
+    public List<Usuario>getUsuarios(@RequestHeader(value= "Authorization") String token) {
 
 /*
 String idUs = jwTutil.getKey(token);
@@ -121,7 +121,16 @@ return usuariosDao.getUsuarios();
 
 //esta seria la libreria de hash
 Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);
+
+//procesa la contraseña en la codificacion. las iteraciones son la cantidad de veces que queremos que haga el proceso
 String hashh= argon2.hash(1,1024,1,usuario.getPassword());
+//al establecer este hasheo, la contraseña en la base de datos sera mas larga por lo que conviene añadir un varchar minimo de 300 al campo password
+        //de la base de datos para que no de error de "jwt must contain 2 characters" o directamente falle el logueo.
+        //Tambien puede fallar la iteracion del objeto usuarios que quiere recorrer por lo que se mostrara en la base de datos el usuario añadido
+        // y no en el frontend.
+
+
+
 
 usuario.setPassword(hashh); //esta contraseña la tenemos que encriptar con un hash y para eso importamos una libreria.
 
